@@ -170,5 +170,6 @@ export class GunSocketClusterWorker extends SCWorker {
       }
       return
     }
+    next()
   }
 }

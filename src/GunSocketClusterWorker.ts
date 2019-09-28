@@ -171,12 +171,6 @@ export class GunSocketClusterWorker extends SCWorker {
       return
     }
 
-    if (req.channel === "gun/put" && this.isAdmin(req.socket)) {
-      req.channel = "gun/put/validated"
-    }
-    if (req.channel === "gun/get" && this.isAdmin(req.socket)) {
-      req.channel = "gun/get/validated"
-    }
     next()
   }
 }

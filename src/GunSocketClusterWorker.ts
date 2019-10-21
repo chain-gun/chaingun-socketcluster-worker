@@ -1,4 +1,4 @@
-import { verify } from '@notabug/gun-sear';
+import { verify } from '@chaingun/sear';
 import express from 'express';
 import morgan from 'morgan';
 import healthChecker from 'sc-framework-health-check';

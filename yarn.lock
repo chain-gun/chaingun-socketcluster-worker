@@ -316,10 +316,10 @@
     "@chaingun/types" "^0.0.3"
     node-lmdb "^0.7.0"
 
-"@chaingun/node-adapters@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.0.2.tgz#a56d023fa8a9a94a6dc9a803338d16a45c659835"
-  integrity sha512-PgpX7ty7Ra72GAJ1KcFF2zedtjea/8i6SwFPd3ECpJ5rnOXDL5Dj3GU2lapSZ6at5dTHWKEGKIWjnu9gmAgs8Q==
+"@chaingun/node-adapters@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.0.3.tgz#4fbded6ff64fec80d6be18c14585aa917f69ae3d"
+  integrity sha512-TyOa80DP4oVpBHudlqhwbaMHNmQJD295v/oyor9FXt6OkJpDpOpTNpzdSQkMsxwilYHYMbpXr0WQFvQEPjQB5w==
   dependencies:
     "@chaingun/http-adapter" "^0.3.0"
     "@chaingun/lmdb-adapter" "^0.0.7"

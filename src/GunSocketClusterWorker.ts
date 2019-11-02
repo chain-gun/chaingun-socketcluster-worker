@@ -1,6 +1,6 @@
-import { createGraphAdapter } from '@chaingun/http-adapter'
+import createAdapter from '@chaingun/node-adapters'
 import { verify } from '@chaingun/sear'
-import { GunGraphAdapter, GunMsg } from '@chaingun/types'
+import { GunGraphAdapter, GunGraphData, GunMsg, GunNode } from '@chaingun/types'
 import express from 'express'
 import morgan from 'morgan'
 import healthChecker from 'sc-framework-health-check'
@@ -30,32 +30,52 @@ export class GunSocketClusterWorker extends SCWorker {
     )
   }
 
-  protected setupAdapter(): GunGraphAdapter {
-    const url = process.env.GUN_HTTP_PERSIST_URL
+  /**
+   * Persist put data and publish any resulting diff
+   *
+   * @param msg
+   */
+  public async processPut(msg: GunMsg): Promise<GunMsg> {
+    const msgId = Math.random()
+      .toString(36)
+      .slice(2)
 
-    if (!url) {
-      throw new Error('GUN_HTTP_PERSIST_URL not set')
+    try {
+      const diff = msg.put && (await this.persistGraphData(msg.put))
+
+      if (diff && Object.keys(diff).length) {
+        this.publishDiff({
+          ...msg,
+          put: diff
+        })
+      }
+
+      return {
+        '#': msgId,
+        '@': msg['#'],
+        err: null,
+        ok: true
+      }
+    } catch (e) {
+      return {
+        '#': msgId,
+        '@': msg['#'],
+        err: 'Error saving',
+        ok: false
+      }
     }
-
-    return createGraphAdapter(url)
   }
 
-  protected setupMiddleware(): void {
-    this.scServer.addMiddleware(
-      this.scServer.MIDDLEWARE_SUBSCRIBE,
-      this.onSubscribeMiddleware.bind(this)
-    )
+  public readNode(soul: string): Promise<GunNode | null> {
+    return this.adapter.get(soul)
+  }
 
-    this.scServer.addMiddleware(
-      this.scServer.MIDDLEWARE_PUBLISH_IN,
-      this.writeValidationMiddleware.bind(this)
-    )
+  protected persistGraphData(graphData: GunGraphData): Promise<GunGraphData> {
+    return this.adapter.put(graphData)
+  }
 
-    this.scServer.on('connection', socket => {
-      socket.on('login', (req, respond) =>
-        this.authenticateLogin(socket, req, respond)
-      )
-    })
+  protected setupAdapter(): GunGraphAdapter {
+    return createAdapter()
   }
 
   protected setupExpress(): express.Express {
@@ -67,10 +87,29 @@ export class GunSocketClusterWorker extends SCWorker {
       // See https://github.com/expressjs/morgan for other available formats.
       app.use(morgan('dev'))
     }
+
     // Listen for HTTP GET "/health-check".
     healthChecker.attach(this, app)
 
     return app
+  }
+
+  protected setupMiddleware(): void {
+    this.scServer.addMiddleware(
+      this.scServer.MIDDLEWARE_SUBSCRIBE,
+      this.subscribeMiddleware.bind(this)
+    )
+
+    this.scServer.addMiddleware(
+      this.scServer.MIDDLEWARE_PUBLISH_IN,
+      this.publishInMiddleware.bind(this)
+    )
+
+    this.scServer.on('connection', socket => {
+      socket.on('login', (req, respond) =>
+        this.authenticateLogin(socket, req, respond)
+      )
+    })
   }
 
   /**
@@ -119,6 +158,7 @@ export class GunSocketClusterWorker extends SCWorker {
       }
 
       const isVerified = await verify(req.proof, req.pub)
+
       if (isVerified) {
         socket.setAuthToken({
           pub: req.pub,
@@ -133,10 +173,7 @@ export class GunSocketClusterWorker extends SCWorker {
     }
   }
 
-  protected onSubscribeMiddleware(
-    req: any,
-    next: (arg0?: Error) => void
-  ): void {
+  protected subscribeMiddleware(req: any, next: (arg0?: Error) => void): void {
     if (req.channel === 'gun/put' || req.channel === 'gun/get') {
       if (!this.isAdmin(req.socket)) {
         next(new Error(`You aren't allowed to subscribe to ${req.channel}`))
@@ -145,33 +182,25 @@ export class GunSocketClusterWorker extends SCWorker {
     }
 
     const soul = req.channel.replace(/^gun\/nodes\//, '')
+
     if (!soul || soul === req.channel) {
       next()
       return
     }
 
     next()
-    ;(async () => {
-      const msgId = Math.random()
-        .toString(36)
-        .slice(2)
 
-      this.scServer.exchange.publish('gun/get/validated', {
-        '#': msgId,
-        get: {
-          '#': soul
-        }
-      })
+    const msgId = Math.random()
+      .toString(36)
+      .slice(2)
 
-      setTimeout(async () => {
-        try {
-          const node = await this.adapter.get(soul)
-
+    this.readNode(soul)
+      .then(node => {
+        setTimeout(() => {
           req.socket.emit('#publish', {
             channel: req.channel,
             data: {
               '#': msgId,
-              '@': 'wtf',
               put: node
                 ? {
                     [soul]: node
@@ -179,9 +208,12 @@ export class GunSocketClusterWorker extends SCWorker {
                 : null
             }
           })
-        } catch (e) {
-          // tslint:disable-next-line: no-console
-          console.warn(e.stack || e)
+        }, 25)
+      })
+      .catch(e => {
+        // tslint:disable-next-line: no-console
+        console.warn(e.stack || e)
+        setTimeout(() => {
           req.socket.emit('#publish', {
             channel: req.channel,
             data: {
@@ -190,16 +222,15 @@ export class GunSocketClusterWorker extends SCWorker {
               err: 'Error fetching node'
             }
           })
-        }
-      }, 10)
-    })()
+        }, 25)
+      })
   }
 
-  protected writeValidationMiddleware(
+  protected publishInMiddleware(
     req: any,
     next: (arg0?: Error | boolean) => void
   ): void {
-    if (req.channel !== 'gun/get' && req.channel !== 'gun/put') {
+    if (req.channel !== 'gun/put') {
       if (this.isAdmin(req.socket)) {
         next()
       } else {
@@ -208,13 +239,6 @@ export class GunSocketClusterWorker extends SCWorker {
       return
     }
 
-    this.persistMiddleware(req, next)
-  }
-
-  protected async persistMiddleware(
-    req: any,
-    next: (arg0?: Error | boolean) => void
-  ): Promise<void> {
     next()
 
     if (req.channel !== 'gun/put' || !req.data || !req.data.put) {
@@ -223,44 +247,12 @@ export class GunSocketClusterWorker extends SCWorker {
 
     const msg = req.data
 
-    req.socket.emit('#publish', {
-      channel: `gun/@${msg['#']}`,
-      data: await this.processPut(msg)
-    })
-  }
-
-  /**
-   * Persist put data and publish any resulting diff
-   *
-   * @param msg
-   */
-  protected async processPut(msg: GunMsg): Promise<GunMsg> {
-    const msgId = Math.random()
-      .toString(36)
-      .slice(2)
-
-    try {
-      const diff = msg.put && (await this.adapter.put(msg.put))
-
-      this.publishDiff({
-        ...msg,
-        put: diff
+    this.processPut(msg).then(data => {
+      req.socket.emit('#publish', {
+        channel: `gun/@${msg['#']}`,
+        data
       })
-
-      return {
-        '#': msgId,
-        '@': msg['#'],
-        err: null,
-        ok: true
-      }
-    } catch (e) {
-      return {
-        '#': msgId,
-        '@': msg['#'],
-        err: 'Error saving',
-        ok: false
-      }
-    }
+    })
   }
 
   /**

@@ -67,6 +67,8 @@ export class GunSocketClusterWorker extends SCWorker {
   protected wrapAdapter(adapter: GunGraphAdapter): GunGraphAdapter {
     return {
       get: adapter.get,
+      getJsonString: adapter.getJsonString,
+      getJsonStringSync: adapter.getJsonStringSync,
       put: (graphData: GunGraphData) => {
         return adapter.put(graphData).then(diff => {
           if (!diff || !Object.keys(diff).length) {

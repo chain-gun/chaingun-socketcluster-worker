@@ -1,5 +1,6 @@
+import { createServer } from '@chaingun/http-server'
 import createAdapter from '@chaingun/node-adapters'
-import { verify } from '@chaingun/sear'
+import { pseudoRandomText, verify } from '@chaingun/sear'
 import { GunGraphAdapter, GunGraphData, GunMsg, GunNode } from '@chaingun/types'
 import express from 'express'
 import morgan from 'morgan'
@@ -16,7 +17,7 @@ export class GunSocketClusterWorker extends SCWorker {
 
   constructor(...args) {
     super(...args)
-    this.adapter = this.setupAdapter()
+    this.adapter = this.wrapAdapter(this.setupAdapter())
   }
 
   public run(): void {
@@ -36,18 +37,11 @@ export class GunSocketClusterWorker extends SCWorker {
    * @param msg
    */
   public async processPut(msg: GunMsg): Promise<GunMsg> {
-    const msgId = Math.random()
-      .toString(36)
-      .slice(2)
+    const msgId = pseudoRandomText()
 
     try {
-      const diff = msg.put && (await this.persistGraphData(msg.put))
-
-      if (diff && Object.keys(diff).length) {
-        this.publishDiff({
-          ...msg,
-          put: diff
-        })
+      if (msg.put) {
+        await this.adapter.put(msg.put)
       }
 
       return {
@@ -70,17 +64,33 @@ export class GunSocketClusterWorker extends SCWorker {
     return this.adapter.get(soul)
   }
 
-  protected persistGraphData(graphData: GunGraphData): Promise<GunGraphData> {
-    return this.adapter.put(graphData)
+  protected wrapAdapter(adapter: GunGraphAdapter): GunGraphAdapter {
+    return {
+      get: adapter.get,
+      put: (graphData: GunGraphData) => {
+        return adapter.put(graphData).then(diff => {
+          if (!diff || !Object.keys(diff).length) {
+            return diff
+          }
+
+          this.publishDiff({
+            '#': pseudoRandomText(),
+            put: diff
+          })
+
+          return diff
+        })
+      }
+    }
   }
 
   protected setupAdapter(): GunGraphAdapter {
     return createAdapter()
   }
 
-  protected setupExpress(): express.Express {
+  protected setupExpress(): express.Application {
     const environment = this.options.environment
-    const app = express()
+    const app = createServer(this.adapter)
 
     if (environment === 'dev') {
       // Log every HTTP request.
@@ -90,7 +100,6 @@ export class GunSocketClusterWorker extends SCWorker {
 
     // Listen for HTTP GET "/health-check".
     healthChecker.attach(this, app)
-
     return app
   }
 
@@ -195,33 +204,34 @@ export class GunSocketClusterWorker extends SCWorker {
       .slice(2)
 
     this.readNode(soul)
-      .then(node => {
-        setTimeout(() => {
-          req.socket.emit('#publish', {
-            channel: req.channel,
-            data: {
-              '#': msgId,
-              put: node
-                ? {
-                    [soul]: node
-                  }
-                : null
-            }
-          })
-        }, 25)
-      })
+      .then(node => ({
+        channel: req.channel,
+        data: {
+          '#': msgId,
+          put: node
+            ? {
+                [soul]: node
+              }
+            : null
+        }
+      }))
       .catch(e => {
         // tslint:disable-next-line: no-console
         console.warn(e.stack || e)
+        return {
+          channel: req.channel,
+          data: {
+            '#': msgId,
+            '@': req['#'],
+            err: 'Error fetching node'
+          }
+        }
+      })
+      .then(msg => {
         setTimeout(() => {
-          req.socket.emit('#publish', {
-            channel: req.channel,
-            data: {
-              '#': msgId,
-              '@': req['#'],
-              err: 'Error fetching node'
-            }
-          })
+          // Not sure why this delay is necessary and it really shouldn't be
+          // Only thing I can figure is if we don't wait we emit before subscribed
+          req.socket.emit('#publish', msg)
         }, 25)
       })
   }
@@ -230,6 +240,8 @@ export class GunSocketClusterWorker extends SCWorker {
     req: any,
     next: (arg0?: Error | boolean) => void
   ): void {
+    const msg = req.data
+
     if (req.channel !== 'gun/put') {
       if (this.isAdmin(req.socket)) {
         next()
@@ -241,11 +253,9 @@ export class GunSocketClusterWorker extends SCWorker {
 
     next()
 
-    if (req.channel !== 'gun/put' || !req.data || !req.data.put) {
+    if (req.channel !== 'gun/put' || !msg || !msg.put) {
       return
     }
-
-    const msg = req.data
 
     this.processPut(msg).then(data => {
       req.socket.emit('#publish', {

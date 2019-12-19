@@ -305,10 +305,10 @@
   dependencies:
     "@chaingun/types" "^0.0.3"
 
-"@chaingun/http-adapter@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@chaingun/http-adapter/-/http-adapter-0.5.0.tgz#ec4a1a6fe301a874e9b9035e0f04215e1eccf013"
-  integrity sha512-2AfY83ziD+SbxMcHSmU4QgC96lRXwiRuoK90nEbQQL1rVhjtSwBD41MoU0tWHpTPz2FEYlIYt3mkxmvnnEaTPw==
+"@chaingun/http-adapter@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@chaingun/http-adapter/-/http-adapter-0.5.1.tgz#6402c35f123a15287005888a36df4de08260c35c"
+  integrity sha512-aYi28qx9XbExYNjtlCCp8n1b55eyQuyZAip5MhvD6PMaqTvBPHRDHVkwP9gNWUbb2xNeNtDAGnUCaOPR0/JorQ==
   dependencies:
     "@chaingun/types" "^0.0.4"
     "@types/isomorphic-fetch" "^0.0.35"
@@ -326,10 +326,10 @@
     route-parser "^0.0.5"
     sha.js "^2.4.11"
 
-"@chaingun/lmdb-adapter@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.9.tgz#2873aeace60a2fa72904cb046cb4e90df39a6061"
-  integrity sha512-yscYpK4y9VKydTsXuanH3nwdm7JM+eNAKZV5Nip01bwN0jtMRgiGHxxAHk70o2ftE2uWi0BkqAnhE7oppXoDxg==
+"@chaingun/lmdb-adapter@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.10.tgz#ca85ea51132efaa897078fcb6d91a21d3fab338e"
+  integrity sha512-xCCvb91HLA1Nc8fYKVydq2jZAaCfWoIEdzUZ7fIbfVMwn4JTx9FKwgXVIdOVHE1VlU/JyUJhliJoZepnH2z45Q==
   dependencies:
     "@chaingun/crdt" "^0.0.1"
     "@chaingun/types" "^0.0.4"
@@ -345,13 +345,13 @@
     "@types/ramda" "^0.26.34"
     ramda "^0.26.1"
 
-"@chaingun/node-adapters@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.2.0.tgz#c9a2180bf9f8d821d4368a291397faf3df5e500e"
-  integrity sha512-kVc4JK1jJYbV4FoU1E6opz1anDzyTxAwTHeVz8sFMEcie4gBQBpBEF7S6iniAY3wXoi09UPOh/C1ZLX4anO3rQ==
+"@chaingun/node-adapters@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.2.1.tgz#5ff78f368daa32aaca5bb7ca5eed68e28efdc779"
+  integrity sha512-h1T54bEy0ACxkmD9ayqc/o5rDfLyiTAWhER/Hllty8OE/ohllrhCdsdKpt8utl0rvoXAIIpxq5Fg6sSrm5S/7Q==
   dependencies:
-    "@chaingun/http-adapter" "^0.5.0"
-    "@chaingun/lmdb-adapter" "^0.0.9"
+    "@chaingun/http-adapter" "^0.5.1"
+    "@chaingun/lmdb-adapter" "^0.0.10"
     "@chaingun/memory-adapter" "^0.0.3"
     "@chaingun/types" "^0.0.3"
     "@types/node" "^12.11.7"

@@ -305,34 +305,34 @@
   dependencies:
     "@chaingun/types" "^0.0.3"
 
-"@chaingun/http-adapter@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@chaingun/http-adapter/-/http-adapter-0.5.1.tgz#6402c35f123a15287005888a36df4de08260c35c"
-  integrity sha512-aYi28qx9XbExYNjtlCCp8n1b55eyQuyZAip5MhvD6PMaqTvBPHRDHVkwP9gNWUbb2xNeNtDAGnUCaOPR0/JorQ==
+"@chaingun/http-adapter@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@chaingun/http-adapter/-/http-adapter-0.6.0.tgz#b03e0f6c8bdc097368899a0571100bbc1f282b84"
+  integrity sha512-ye8mU1D75o+NgmD/+T+61Yc42OeedO+AGK/1Iqzps2spcStiu1PFxLNVI1DehGD3Ajod3HQlLicuu1S/vLnamA==
   dependencies:
-    "@chaingun/types" "^0.0.4"
+    "@chaingun/types" "^0.0.5"
     "@types/isomorphic-fetch" "^0.0.35"
     isomorphic-fetch "^2.2.1"
 
-"@chaingun/http-server@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@chaingun/http-server/-/http-server-0.0.2.tgz#af62bd09e89bdaccdf3f7d5d962644fe2d243ea8"
-  integrity sha512-cCfiFWEVtkiDXmpO5ZRNYn1j5YiMtjeXMIerhDafKuIzAhESAzEicLOsgjRcER3+qpDIAABO9SojAaebfBIgqw==
+"@chaingun/http-server@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@chaingun/http-server/-/http-server-0.0.3.tgz#87556ffa96cc6a76052317e6cdafd5b86fa29718"
+  integrity sha512-caHQAyhyldPcXeqHygPS9sDKFqeniyuj04VT4QueIAlb7MkGVUDL1wTHm0Z94U25Rt5cF0w/F8YLnirj8MApwA==
   dependencies:
-    "@chaingun/types" "^0.0.4"
+    "@chaingun/types" "^0.0.5"
     "@types/express" "^4.17.1"
     "@types/route-parser" "^0.1.3"
     express "^4.17.1"
     route-parser "^0.0.5"
     sha.js "^2.4.11"
 
-"@chaingun/lmdb-adapter@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.10.tgz#ca85ea51132efaa897078fcb6d91a21d3fab338e"
-  integrity sha512-xCCvb91HLA1Nc8fYKVydq2jZAaCfWoIEdzUZ7fIbfVMwn4JTx9FKwgXVIdOVHE1VlU/JyUJhliJoZepnH2z45Q==
+"@chaingun/lmdb-adapter@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.13.tgz#19e1e9faa6d40f975e222e104457738021474b88"
+  integrity sha512-u1k7UnB/s4JiXQckzXSBaGXDyi3qrQDFpkUyd9SJA5JQND/o8MULRMKCHd9kl1O3a66urWYFxq8WpdfaY6xWAg==
   dependencies:
     "@chaingun/crdt" "^0.0.1"
-    "@chaingun/types" "^0.0.4"
+    "@chaingun/types" "^0.0.5"
     node-lmdb "^0.7.0"
 
 "@chaingun/memory-adapter@^0.0.3":
@@ -345,15 +345,15 @@
     "@types/ramda" "^0.26.34"
     ramda "^0.26.1"
 
-"@chaingun/node-adapters@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.2.1.tgz#5ff78f368daa32aaca5bb7ca5eed68e28efdc779"
-  integrity sha512-h1T54bEy0ACxkmD9ayqc/o5rDfLyiTAWhER/Hllty8OE/ohllrhCdsdKpt8utl0rvoXAIIpxq5Fg6sSrm5S/7Q==
+"@chaingun/node-adapters@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.3.0.tgz#8b69d668000ee7bf37d1b2b56af4e2939c9ccd59"
+  integrity sha512-edwcdgrwlslqadpDkmDEYnunF7OshnuEuRtRUma0HkVjXi/4YPYOy5MB0xN55+rKjNgg5vUuxTSLqzDnfHdfaw==
   dependencies:
-    "@chaingun/http-adapter" "^0.5.1"
-    "@chaingun/lmdb-adapter" "^0.0.10"
+    "@chaingun/http-adapter" "^0.6.0"
+    "@chaingun/lmdb-adapter" "^0.0.13"
     "@chaingun/memory-adapter" "^0.0.3"
-    "@chaingun/types" "^0.0.3"
+    "@chaingun/types" "^0.0.5"
     "@types/node" "^12.11.7"
 
 "@chaingun/sear@^0.0.26":
@@ -377,10 +377,10 @@
   resolved "https://registry.yarnpkg.com/@chaingun/types/-/types-0.0.3.tgz#2f0968932c827528b8815ce4b2886661f7d94e06"
   integrity sha512-0rIMrcK0BGiiIzMhlhNxSiqGwyxWhgbGyUdycp6cmqwQrhFd6cxBVUtGkdWsGULrHUye26TLeKfbGXRvP8TXCQ==
 
-"@chaingun/types@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@chaingun/types/-/types-0.0.4.tgz#825ab52e233101bb3246351fea4042b017dc8b87"
-  integrity sha512-IHL4/kwAEogAUrGUghAKpCbeaK3LYRtZUPsb8Ip0ByAZ9wiTws8DnmW347fe+CNPIEPfK9TguGYVLrdXT1DHiw==
+"@chaingun/types@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@chaingun/types/-/types-0.0.5.tgz#d61b59a8d4a25dec2ba20c66ed1ee1aefb7c889f"
+  integrity sha512-T0lefPyxqVWdMsOFKfld5hEPwf3UyuWBNGsmCU45dygrjBmo2pibVLE+DkwQUIpafOE/vg434p+aqs1DkCHIDQ==
 
 "@concordance/react@^2.0.0":
   version "2.0.0"

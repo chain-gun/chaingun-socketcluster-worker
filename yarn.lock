@@ -326,10 +326,10 @@
     route-parser "^0.0.5"
     sha.js "^2.4.11"
 
-"@chaingun/lmdb-adapter@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.14.tgz#5fb583ec30fa8474f6d20647baf04ec24b3d7bcc"
-  integrity sha512-twYJkDUqd43+WORTUdCKctUdV1eOgZ9zzqU2LyzrmerGtN2Dd3flXEGg4JQcyDuXTHnkR9WvNPfotNmVRYk0qQ==
+"@chaingun/lmdb-adapter@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.15.tgz#6315c25f7a95b645973ae48b224bc21ee3a2721b"
+  integrity sha512-G8SXViwUrHvlNO8KNQRZEpMOTLMeY/Wjpj0wK/u+x5L3CBJpVLY0B4H0XloJx0OmmifDZ5I6X6Ad2avp+YPbLQ==
   dependencies:
     "@chaingun/crdt" "^0.0.1"
     "@chaingun/types" "^0.0.5"
@@ -345,13 +345,13 @@
     "@types/ramda" "^0.26.34"
     ramda "^0.26.1"
 
-"@chaingun/node-adapters@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.3.1.tgz#63649be2c33fdc5cb3d715090a54c249ec6275f5"
-  integrity sha512-jhjbWi+goQzvrEfG7AFjhYILU9nQ6fELG+eVXeMNgOTg4GyfOn9Na8VjLH6+xP4/c9POk+bi9AEDZtZj2cpZ0A==
+"@chaingun/node-adapters@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.3.2.tgz#1b64404d8cd8d35e088cd57c748cbb99a302a1af"
+  integrity sha512-AsYr/v7891qyiLviiG7GxBDzkNYJ1H0vEAnHKwK1Pgxe95ORng445nVqumEiAPgJM4HN5uFqdEc7UwPAdC43PA==
   dependencies:
     "@chaingun/http-adapter" "^0.6.0"
-    "@chaingun/lmdb-adapter" "^0.0.14"
+    "@chaingun/lmdb-adapter" "^0.0.15"
     "@chaingun/memory-adapter" "^0.0.3"
     "@chaingun/types" "^0.0.5"
     "@types/node" "^12.11.7"

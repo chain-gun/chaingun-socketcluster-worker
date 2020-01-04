@@ -305,10 +305,10 @@
   dependencies:
     "@chaingun/types" "^0.0.3"
 
-"@chaingun/federation-adapter@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@chaingun/federation-adapter/-/federation-adapter-0.0.6.tgz#4793ce274dc541a304be70e3588f7aec55010894"
-  integrity sha512-GuBKWwvkDeUpIGoDRuF7kZ603W/Nd6xRasJhC1d4xsopReufHdPmFwONbsL1H1bPOKuKVx6ZVN3DiAOgaFQJXQ==
+"@chaingun/federation-adapter@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@chaingun/federation-adapter/-/federation-adapter-0.0.7.tgz#5bae5b989e84d96aa37b9b0bfd548bba873edc50"
+  integrity sha512-/o4koZs9nMI/YzajkG4DM+VsFEiGFjwPyABvI+STyFRWQo2ZY0bwETbnscVKS+uopE3QkChSzC0dhwMRCx3+lw==
   dependencies:
     "@chaingun/types" "^0.0.5"
     "@types/uuid" "^3.4.6"

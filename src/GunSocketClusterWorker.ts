@@ -11,9 +11,6 @@ import SCWorker from 'socketcluster/scworker'
 
 export class GunSocketClusterWorker extends SCWorker {
   public readonly adapter: GunGraphAdapter
-  public readonly httpServer: any
-  public readonly scServer: any
-  public readonly options: any
 
   constructor(...args) {
     super(...args)

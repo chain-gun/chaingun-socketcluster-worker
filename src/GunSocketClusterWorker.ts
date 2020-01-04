@@ -1,18 +1,55 @@
+import {
+  FederatedGunGraphAdapter,
+  FederationAdapter
+} from '@chaingun/federation-adapter'
+// tslint:disable-next-line: no-implicit-dependencies
+import { createGraphAdapter as createHttpAdapter } from '@chaingun/http-adapter'
 import { createServer } from '@chaingun/http-server'
 import createAdapter from '@chaingun/node-adapters'
 import { pseudoRandomText, verify } from '@chaingun/sear'
 import { GunGraphAdapter, GunGraphData, GunMsg, GunNode } from '@chaingun/types'
 import express from 'express'
+import fs from 'fs'
+import yaml from 'js-yaml'
 import morgan from 'morgan'
 import healthChecker from 'sc-framework-health-check'
 import { SCServerSocket } from 'socketcluster-server'
 // tslint:disable-next-line: no-submodule-imports
 import SCWorker from 'socketcluster/scworker'
 
-export class GunSocketClusterWorker extends SCWorker {
-  public readonly adapter: GunGraphAdapter
+const PEERS_CONFIG_FILE = process.env.PEERS_CONFIG_FILE || './peers.yaml'
+const PEER_SYNC_INTERVAL =
+  parseInt(process.env.PEER_SYNC_INTERVAL, 10) || 10 * 1000
 
-  constructor(...args) {
+async function sleep(duration = 1000): Promise<void> {
+  return new Promise(ok => setTimeout(ok, duration))
+}
+
+function peersFromConfig(): Record<string, GunGraphAdapter> {
+  // tslint:disable-next-line: no-let
+  let peersConfigTxt = ''
+
+  try {
+    peersConfigTxt = fs.readFileSync(PEERS_CONFIG_FILE).toString()
+  } catch (e) {
+    // tslint:disable-next-line: no-console
+    console.warn('Peers config missing', PEERS_CONFIG_FILE, e.stack)
+  }
+
+  const peerUrls = yaml.safeLoad(peersConfigTxt) || []
+  const peers: Record<string, GunGraphAdapter> = peerUrls.reduce((pm, url) => {
+    return {
+      ...pm,
+      [url]: createHttpAdapter(`${url}/gun`)
+    }
+  }, {})
+  return peers
+}
+
+export class GunSocketClusterWorker extends SCWorker {
+  public readonly adapter: FederatedGunGraphAdapter
+
+  constructor(...args: any) {
     super(...args)
     this.adapter = this.wrapAdapter(this.setupAdapter())
   }
@@ -20,6 +57,10 @@ export class GunSocketClusterWorker extends SCWorker {
   public run(): void {
     this.httpServer.on('request', this.setupExpress())
     this.setupMiddleware()
+
+    if (this.isLeader) {
+      this.syncWithPeers()
+    }
   }
 
   public isAdmin(socket: SCServerSocket): boolean {
@@ -61,30 +102,71 @@ export class GunSocketClusterWorker extends SCWorker {
     return this.adapter.get(soul)
   }
 
-  protected wrapAdapter(adapter: GunGraphAdapter): GunGraphAdapter {
-    return {
-      get: adapter.get,
-      getJsonString: adapter.getJsonString,
-      getJsonStringSync: adapter.getJsonStringSync,
-      put: (graphData: GunGraphData) => {
-        return adapter.put(graphData).then(diff => {
-          if (!diff || !Object.keys(diff).length) {
-            return diff
-          }
+  protected getPeers(): Record<string, GunGraphAdapter> {
+    return peersFromConfig()
+  }
 
+  protected async syncWithPeers(): Promise<void> {
+    while (true) {
+      try {
+        await this.adapter.syncWithPeers()
+      } catch (e) {
+        // tslint:disable-next-line: no-console
+        console.error('Sync error', e.stack || e)
+      }
+
+      await sleep(PEER_SYNC_INTERVAL)
+    }
+  }
+
+  protected wrapAdapter(adapter: GunGraphAdapter): FederatedGunGraphAdapter {
+    const withPublish = {
+      ...adapter,
+      put: async (graph: GunGraphData) => {
+        const diff = await adapter.put(graph)
+
+        if (diff) {
           this.publishDiff({
             '#': pseudoRandomText(),
             put: diff
           })
+        }
 
-          return diff
+        return diff
+      },
+      putSync: undefined
+    }
+
+    const withValidation = {
+      ...withPublish,
+      put: (graph: GunGraphData) => {
+        return this.validatePut(graph).then(isValid => {
+          if (isValid) {
+            return withPublish.put(graph)
+          }
+
+          throw new Error('Invalid graph data')
         })
       }
     }
+
+    return FederationAdapter.create(
+      withPublish,
+      this.getPeers(),
+      withValidation,
+      {
+        putToPeers: true
+      }
+    )
   }
 
   protected setupAdapter(): GunGraphAdapter {
     return createAdapter()
+  }
+
+  // tslint:disable-next-line: variable-name
+  protected async validatePut(_graph: GunGraphData): Promise<boolean> {
+    return true
   }
 
   protected setupExpress(): express.Application {

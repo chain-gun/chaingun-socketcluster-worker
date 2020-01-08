@@ -10,4 +10,4 @@ export const PEER_CHANGELOG_RETENTION =
   parseInt(process.env.PEER_CHANGELOG_RETENTION, 10) || 24 * 60 * 60 * 1000
 
 export const SSE_PING_INTERVAL =
-  parseInt(process.env.SSE_PING_INTERVAL, 10) || 5000
+  parseInt(process.env.SSE_PING_INTERVAL, 10) || 30 * 1000

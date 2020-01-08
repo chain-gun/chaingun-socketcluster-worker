@@ -291,6 +291,15 @@
     typedoc-default-themes "^0.6.0-0"
     typescript "3.5.x"
 
+"@chaingun/client@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@chaingun/client/-/client-0.0.26.tgz#5bdee3b419fa6c7f144cea76db24cfaae38d49cc"
+  integrity sha512-CmPC3czBHZ0ZV7U5D4vFTzuW5Jq38PMeM8Pq9S4GW7goI6nlhwaUtz56rQ+r8MLgzzjIqxz4bBVUkChIsCS5rw==
+  dependencies:
+    "@chaingun/crdt" "^0.0.2"
+    "@chaingun/types" "^0.0.3"
+    reconnecting-websocket "^4.2.0"
+
 "@chaingun/crdt@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@chaingun/crdt/-/crdt-0.0.1.tgz#a94ebed24c93d50fe66526fc36c2c9764dc55691"
@@ -305,12 +314,12 @@
   dependencies:
     "@chaingun/types" "^0.0.3"
 
-"@chaingun/federation-adapter@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@chaingun/federation-adapter/-/federation-adapter-0.0.7.tgz#5bae5b989e84d96aa37b9b0bfd548bba873edc50"
-  integrity sha512-/o4koZs9nMI/YzajkG4DM+VsFEiGFjwPyABvI+STyFRWQo2ZY0bwETbnscVKS+uopE3QkChSzC0dhwMRCx3+lw==
+"@chaingun/federation-adapter@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@chaingun/federation-adapter/-/federation-adapter-0.0.8.tgz#b628021cb9c54e2ca3ef70fb0d971331c49e7569"
+  integrity sha512-QBuIMEO+7ZrL/h7tW9AYL/C7w/gvDIw3cI9nEx48sHKKws2a9hXB7GSXvY+NKWUELS0Ob4B8eP9nfifcUc1bcg==
   dependencies:
-    "@chaingun/types" "^0.0.5"
+    "@chaingun/types" "^0.0.6"
     "@types/uuid" "^3.4.6"
     uuid "^3.3.3"
 
@@ -335,13 +344,13 @@
     route-parser "^0.0.5"
     sha.js "^2.4.11"
 
-"@chaingun/lmdb-adapter@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.15.tgz#6315c25f7a95b645973ae48b224bc21ee3a2721b"
-  integrity sha512-G8SXViwUrHvlNO8KNQRZEpMOTLMeY/Wjpj0wK/u+x5L3CBJpVLY0B4H0XloJx0OmmifDZ5I6X6Ad2avp+YPbLQ==
+"@chaingun/lmdb-adapter@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@chaingun/lmdb-adapter/-/lmdb-adapter-0.0.17.tgz#924b1dc7f53c9da41f370e8d2cd889a73ebf997d"
+  integrity sha512-aMHKZyrofPWWzS7Gz53WDlA0kJHXWKmipPIWL4ebYsG10PZzmU4eq+TIviNyw8k3goPcIgZ/w44vLoP8ueeIqg==
   dependencies:
     "@chaingun/crdt" "^0.0.1"
-    "@chaingun/types" "^0.0.5"
+    "@chaingun/types" "^0.0.6"
     node-lmdb "^0.7.0"
 
 "@chaingun/memory-adapter@^0.0.3":
@@ -354,15 +363,15 @@
     "@types/ramda" "^0.26.34"
     ramda "^0.26.1"
 
-"@chaingun/node-adapters@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.3.2.tgz#1b64404d8cd8d35e088cd57c748cbb99a302a1af"
-  integrity sha512-AsYr/v7891qyiLviiG7GxBDzkNYJ1H0vEAnHKwK1Pgxe95ORng445nVqumEiAPgJM4HN5uFqdEc7UwPAdC43PA==
+"@chaingun/node-adapters@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.4.1.tgz#b5a3c30b047b8d3e74248de8c66b61ddeb7efad2"
+  integrity sha512-QTVMqt9UwMQHYtOxnkLnT1jfj/pYMX9c1Fdq6DgcIBPFW83W/1tikbnCJQtqU4Qg754r4GACNlOFnaqWi1BTiA==
   dependencies:
     "@chaingun/http-adapter" "^0.6.0"
-    "@chaingun/lmdb-adapter" "^0.0.15"
+    "@chaingun/lmdb-adapter" "^0.0.17"
     "@chaingun/memory-adapter" "^0.0.3"
-    "@chaingun/types" "^0.0.5"
+    "@chaingun/types" "^0.0.6"
     "@types/node" "^12.11.7"
 
 "@chaingun/sear@^0.0.26":
@@ -390,6 +399,11 @@
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@chaingun/types/-/types-0.0.5.tgz#d61b59a8d4a25dec2ba20c66ed1ee1aefb7c889f"
   integrity sha512-T0lefPyxqVWdMsOFKfld5hEPwf3UyuWBNGsmCU45dygrjBmo2pibVLE+DkwQUIpafOE/vg434p+aqs1DkCHIDQ==
+
+"@chaingun/types@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@chaingun/types/-/types-0.0.6.tgz#cc8d45238cf44768843ca7fcb1aaad1e8289bd2b"
+  integrity sha512-VUKhCXHxDb5TMtV+rTFvXrNFRq9yZI1uqCt69UC09kgJfhJQPgtKsCx2kPWABGO8K5bErztmgMmcLPY/6GUp/g==
 
 "@concordance/react@^2.0.0":
   version "2.0.0"
@@ -4634,6 +4648,11 @@ rechoir@^0.6.2:
   integrity sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=
   dependencies:
     resolve "^1.1.6"
+
+reconnecting-websocket@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/reconnecting-websocket/-/reconnecting-websocket-4.2.0.tgz#2395f84b5d0acee439ff5df34c3fd0853d11be7c"
+  integrity sha512-HMD8A0sv40xhkHf/T4qxktyOvHx7K3d2A9i1QG2wRIYdMecxQJMhTIBH4aQ8KfQLfQW4UOqNSfxTgv0C+MbPIA==
 
 redent@^1.0.0:
   version "1.0.0"

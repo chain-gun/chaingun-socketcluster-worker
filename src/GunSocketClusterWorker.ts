@@ -16,10 +16,14 @@ import healthChecker from 'sc-framework-health-check'
 import { SCServerSocket } from 'socketcluster-server'
 // tslint:disable-next-line: no-submodule-imports
 import SCWorker from 'socketcluster/scworker'
-
-const PEERS_CONFIG_FILE = process.env.PEERS_CONFIG_FILE || './peers.yaml'
-const PEER_SYNC_INTERVAL =
-  parseInt(process.env.PEER_SYNC_INTERVAL, 10) || 10 * 1000
+import { ChangelogFeed } from './ChangelogFeed'
+import {
+  PEER_CHANGELOG_RETENTION,
+  PEER_PRUNE_INTERVAL,
+  PEER_SYNC_INTERVAL,
+  PEERS_CONFIG_FILE,
+  SSE_PING_INTERVAL
+} from './config'
 
 async function sleep(duration = 1000): Promise<void> {
   return new Promise(ok => setTimeout(ok, duration))
@@ -48,10 +52,14 @@ function peersFromConfig(): Record<string, GunGraphAdapter> {
 
 export class GunSocketClusterWorker extends SCWorker {
   public readonly adapter: FederatedGunGraphAdapter
+  public readonly internalAdapter: GunGraphAdapter
+  protected readonly changelogFeed: ChangelogFeed
 
   constructor(...args: any) {
     super(...args)
-    this.adapter = this.wrapAdapter(this.setupAdapter())
+    this.internalAdapter = this.setupAdapter()
+    this.adapter = this.wrapAdapter(this.internalAdapter)
+    this.changelogFeed = new ChangelogFeed(this.adapter, this.exchange)
   }
 
   public run(): void {
@@ -60,6 +68,9 @@ export class GunSocketClusterWorker extends SCWorker {
 
     if (this.isLeader) {
       this.syncWithPeers()
+
+      this.prune()
+      setInterval(this.prune.bind(this), PEER_PRUNE_INTERVAL)
     }
   }
 
@@ -100,6 +111,14 @@ export class GunSocketClusterWorker extends SCWorker {
 
   public readNode(soul: string): Promise<GunNode | null> {
     return this.adapter.get(soul)
+  }
+
+  protected async prune(): Promise<void> {
+    const before = new Date().getTime() - PEER_CHANGELOG_RETENTION
+    return (
+      this.internalAdapter.pruneChangelog &&
+      this.internalAdapter.pruneChangelog(before)
+    )
   }
 
   protected getPeers(): Record<string, GunGraphAdapter> {
@@ -178,6 +197,39 @@ export class GunSocketClusterWorker extends SCWorker {
       // See https://github.com/expressjs/morgan for other available formats.
       app.use(morgan('dev'))
     }
+
+    app.get('/gun/changelog', (req, res) => {
+      res.writeHead(200, {
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        'Content-Type': 'text/event-stream'
+      })
+      res.write('\n')
+
+      // @ts-ignore
+      // tslint:disable-next-line: no-unused-expression
+      res.flush && res.flush()
+
+      const pingInterval = setInterval(() => {
+        res.write('event: ping\n\n')
+        // @ts-ignore
+        // tslint:disable-next-line: no-unused-expression
+        res.flush && res.flush()
+      }, SSE_PING_INTERVAL)
+
+      const off = this.changelogFeed.feed((key: string, diff: GunGraphData) => {
+        res.write(`id: ${key}\n`)
+        res.write(`data: ${JSON.stringify(diff)}\n\n`)
+        // @ts-ignore
+        // tslint:disable-next-line: no-unused-expression
+        res.flush && res.flush()
+      }, req.headers['Last-Event-ID'] || req.query.lastId)
+
+      req.on('close', () => {
+        off()
+        clearInterval(pingInterval)
+      })
+    })
 
     // Listen for HTTP GET "/health-check".
     healthChecker.attach(this, app)
@@ -279,6 +331,10 @@ export class GunSocketClusterWorker extends SCWorker {
     }
 
     next()
+
+    if (soul === 'changelog') {
+      return
+    }
 
     const msgId = Math.random()
       .toString(36)

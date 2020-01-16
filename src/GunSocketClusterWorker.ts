@@ -126,6 +126,8 @@ export class GunSocketClusterWorker extends SCWorker {
   }
 
   protected async syncWithPeers(): Promise<void> {
+    this.adapter.connectToPeers()
+    
     while (true) {
       try {
         await this.adapter.syncWithPeers()

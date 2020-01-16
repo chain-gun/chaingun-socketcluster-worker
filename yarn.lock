@@ -319,23 +319,25 @@
   dependencies:
     "@chaingun/types" "^0.0.3"
 
-"@chaingun/federation-adapter@^0.0.18":
-  version "0.0.18"
-  resolved "https://registry.yarnpkg.com/@chaingun/federation-adapter/-/federation-adapter-0.0.18.tgz#8c46e13c5b11690f42f555e30929a2c326e972e9"
-  integrity sha512-2+Y5BQXv1TjshCOtYvGdqvKv2HHWohYU8OSzrmf2SJa4rMfbKFzdkHA7pVv3h0sC6SAMcaSH3Ku+3ceEV+3ngw==
+"@chaingun/federation-adapter@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@chaingun/federation-adapter/-/federation-adapter-0.1.0.tgz#eab40ccbdf0472fc27d6001bb5afa38b5219f233"
+  integrity sha512-mQOvIam0d7IUeoDDf3fXd9kaAX7jqJ7r4LK67Ixs+wv4rETzHICQRvg5/12Q9u39NovSjnAmIzzvmhfh6Y3WKA==
   dependencies:
     "@chaingun/crdt" "^0.0.2"
-    "@chaingun/types" "^0.0.6"
+    "@chaingun/types" "^0.0.7"
     "@types/uuid" "^3.4.6"
     uuid "^3.3.3"
 
-"@chaingun/http-adapter@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@chaingun/http-adapter/-/http-adapter-0.6.0.tgz#b03e0f6c8bdc097368899a0571100bbc1f282b84"
-  integrity sha512-ye8mU1D75o+NgmD/+T+61Yc42OeedO+AGK/1Iqzps2spcStiu1PFxLNVI1DehGD3Ajod3HQlLicuu1S/vLnamA==
+"@chaingun/http-adapter@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@chaingun/http-adapter/-/http-adapter-0.7.0.tgz#0704757810b31cce4db6affac210b6f060f4c9cb"
+  integrity sha512-KggyWJjeik9Hc/ZR0ZOpAnF93IqfWxb7ttjiEeeT7zsA8y7l09vMe7s2wbkkDl7TDwAoZ9wbWyLYHmV2jfhwrg==
   dependencies:
-    "@chaingun/types" "^0.0.5"
+    "@chaingun/types" "^0.0.7"
+    "@types/eventsource" "^1.1.2"
     "@types/isomorphic-fetch" "^0.0.35"
+    eventsource "^1.0.7"
     isomorphic-fetch "^2.2.1"
 
 "@chaingun/http-server@^0.0.3":
@@ -372,15 +374,15 @@
     "@types/ramda" "^0.26.34"
     ramda "^0.26.1"
 
-"@chaingun/node-adapters@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.5.0.tgz#f60f3f754ac584f918558a41cd0a11065e1843ef"
-  integrity sha512-GqJdgNAxEaMRt/yw2JN3tRrJ8MEbzEKlC+UmUACDXDsVQJIOniWPK+3gFwGa4F9gNax/OpzedHO+7u4H1iTgMA==
+"@chaingun/node-adapters@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@chaingun/node-adapters/-/node-adapters-0.6.0.tgz#0e5c247c58b3182300837975b8fb8e6d7d02de2e"
+  integrity sha512-Tr/lz1guT7OGtIkHDc7tpM+G0MfRoYEPPdTWn3FBhxxRNACv8kc21C8BTogadpIj7wNpcxjgn8IkhLyCRnOftw==
   dependencies:
-    "@chaingun/http-adapter" "^0.6.0"
+    "@chaingun/http-adapter" "^0.7.0"
     "@chaingun/lmdb-adapter" "^0.1.0"
     "@chaingun/memory-adapter" "^0.0.3"
-    "@chaingun/types" "^0.0.6"
+    "@chaingun/types" "^0.0.7"
     "@types/node" "^12.11.7"
 
 "@chaingun/sear@^0.0.26":
@@ -413,6 +415,11 @@
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@chaingun/types/-/types-0.0.6.tgz#cc8d45238cf44768843ca7fcb1aaad1e8289bd2b"
   integrity sha512-VUKhCXHxDb5TMtV+rTFvXrNFRq9yZI1uqCt69UC09kgJfhJQPgtKsCx2kPWABGO8K5bErztmgMmcLPY/6GUp/g==
+
+"@chaingun/types@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@chaingun/types/-/types-0.0.7.tgz#4cb63608aa4e7199f9e46e49803c16cc5fb0ec4e"
+  integrity sha512-Jdo+9HwqItqyotogFeMd+/VZxTUiCEe4hcUX0nGLpUZPnECxqFKr86lzQnTmk7/iBL+3+RAFJ47jPwDn2/c7gA==
 
 "@concordance/react@^2.0.0":
   version "2.0.0"
@@ -527,6 +534,11 @@
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
+
+"@types/eventsource@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/eventsource/-/eventsource-1.1.2.tgz#079ab4213e844e56f7384aec620e1163dab692b3"
+  integrity sha512-4AKWJ6tvEU4fk0770oAK4Z0lQUuSnc5ljHTcYZhQtdP7XMDKKvegGUC6xGD8+4+F+svZKAzlxbKnuGWfgMtgVA==
 
 "@types/expirymanager@*":
   version "0.9.0"
@@ -2173,6 +2185,13 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+
+eventsource@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.0.7.tgz#8fbc72c93fcd34088090bc0a4e64f4b5cee6d8d0"
+  integrity sha512-4Ln17+vVT0k8aWq+t/bF5arcS3EpT9gYtW66EPacdj/mAFevznsnyoHLPy2BA8gbIQeIHoPsvwmfBftfcG//BQ==
+  dependencies:
+    original "^1.0.0"
 
 execa@^0.2.2:
   version "0.2.2"
@@ -4148,6 +4167,13 @@ ora@^3.4.0:
     strip-ansi "^5.2.0"
     wcwidth "^1.0.1"
 
+original@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/original/-/original-1.0.2.tgz#e442a61cffe1c5fd20a65f3261c26663b303f25f"
+  integrity sha512-hyBVl6iqqUOJ8FqRe+l/gS8H+kKYjrEndd5Pm1MfBtsEKA038HkkdbAl/72EAXGyonD/PFsvmVG+EvcIpliMBg==
+  dependencies:
+    url-parse "^1.4.3"
+
 os-homedir@^1.0.0, os-homedir@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-homedir/-/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
@@ -4545,6 +4571,11 @@ query-string@^4.1.0:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
+querystringify@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
+  integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
+
 quick-lru@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-1.1.0.tgz#4360b17c61136ad38078397ff11416e186dcfbb8"
@@ -4777,6 +4808,11 @@ require-precompiled@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/require-precompiled/-/require-precompiled-0.1.0.tgz#5a1b52eb70ebed43eb982e974c85ab59571e56fa"
   integrity sha1-WhtS63Dr7UPrmC6XTIWrWVceVvo=
+
+requires-port@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+  integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
 resolve-cwd@^3.0.0:
   version "3.0.0"
@@ -5833,6 +5869,14 @@ url-parse-lax@^3.0.0:
   integrity sha1-FrXK/Afb42dsGxmZF3gj1lA6yww=
   dependencies:
     prepend-http "^2.0.0"
+
+url-parse@^1.4.3:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
+  integrity sha512-d3uaVyzDB9tQoSXFvuSUNFibTd9zxd2bkVrDRvF5TmvWWQwqE4lgYJ5m+x1DbecWkw+LK4RNl2CU1hHuOKPVlg==
+  dependencies:
+    querystringify "^2.1.1"
+    requires-port "^1.0.0"
 
 urlgrey@^0.4.4:
   version "0.4.4"

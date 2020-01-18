@@ -18,7 +18,10 @@ import { SCServerSocket } from 'socketcluster-server'
 import SCWorker from 'socketcluster/scworker'
 import { ChangelogFeed } from './ChangelogFeed'
 import {
+  PEER_BACK_SYNC,
+  PEER_BATCH_INTERVAL,
   PEER_CHANGELOG_RETENTION,
+  PEER_MAX_STALENESS,
   PEER_PRUNE_INTERVAL,
   PEER_SYNC_INTERVAL,
   PEERS_CONFIG_FILE,
@@ -127,7 +130,7 @@ export class GunSocketClusterWorker extends SCWorker {
 
   protected async syncWithPeers(): Promise<void> {
     this.adapter.connectToPeers()
-    
+
     while (true) {
       try {
         await this.adapter.syncWithPeers()
@@ -176,6 +179,9 @@ export class GunSocketClusterWorker extends SCWorker {
       this.getPeers(),
       withValidation,
       {
+        backSync: PEER_BACK_SYNC,
+        batchInterval: PEER_BATCH_INTERVAL,
+        maxStaleness: PEER_MAX_STALENESS,
         putToPeers: true
       }
     )

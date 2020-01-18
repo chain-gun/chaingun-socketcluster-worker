@@ -53,7 +53,7 @@ function peersFromConfig(): Record<string, GunGraphAdapter> {
 export class GunSocketClusterWorker extends SCWorker {
   public readonly adapter: FederatedGunGraphAdapter
   public readonly internalAdapter: GunGraphAdapter
-  protected readonly changelogFeed: ChangelogFeed
+  public readonly changelogFeed: ChangelogFeed
 
   constructor(...args: any) {
     super(...args)

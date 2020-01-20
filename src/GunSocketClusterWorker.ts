@@ -443,7 +443,5 @@ export class GunSocketClusterWorker extends SCWorker {
         }
       })
     }
-
-    exchange.publish('gun/put/diff', msg)
   }
 }
